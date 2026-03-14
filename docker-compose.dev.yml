@@ -30,7 +30,7 @@ services:
     environment:
       NODE_ENV: development
       PORT: 5000
-      MONGO_URI: mongodb+srv://spdh427_db_user:X3Kg9f8ALdoHabWb@chronicle-mongodb-cluse.qzcxonc.mongodb.net/chronicle
+      MONGO_URI: ${MONGO_URI}
       JWT_SECRET: dev_secret_key_min_64_chars_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
       JWT_REFRESH_SECRET: dev_refresh_secret_key_min_64_chars_xxxxxxxxxxxxxxxxxxxxxxx
       JWT_EXPIRES_IN: 7d
