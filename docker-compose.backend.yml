@@ -1,0 +1,52 @@
+services:
+  # ── MongoDB Database ────────────────────────────────────────────────────────
+  mongodb:
+    image: mongo:7.0
+    container_name: chronicle-mongodb-dev
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+      MONGO_INITDB_DATABASE: chronicle
+    volumes:
+      - mongodb_data_dev:/data/db
+    networks:
+      - chronicle-network-dev
+
+  # ── Backend API Server (Development) ────────────────────────────────────────
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: chronicle-backend-dev
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: development
+      PORT: 5000
+      MONGO_URI: mongodb://admin:admin123@mongodb:27017/chronicle?authSource=admin
+      JWT_SECRET: dev_secret_key_min_64_chars_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      JWT_REFRESH_SECRET: dev_refresh_secret_key_min_64_chars_xxxxxxxxxxxxxxxxxxxxxxx
+      JWT_EXPIRES_IN: 7d
+      JWT_REFRESH_EXPIRES_IN: 30d
+      BCRYPT_ROUNDS: 4
+      CORS_ORIGINS: http://localhost:5173,http://localhost:3000
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - mongodb
+    networks:
+      - chronicle-network-dev
+
+volumes:
+  mongodb_data_dev:
+    driver: local
+
+networks:
+  chronicle-network-dev:
+    driver: bridge
