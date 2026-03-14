@@ -55,7 +55,7 @@ const userSchema = new mongoose.Schema(
 );
 
 // ── Indexes ───────────────────────────────────────────────────────────────────
-userSchema.index({ email: 1 }, { unique: true });
+// userSchema.index({ email: 1 }, { unique: true });
 
 // ── Pre-save hook — hash password ─────────────────────────────────────────────
 userSchema.pre('save', async function (next) {
