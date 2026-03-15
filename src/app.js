@@ -89,6 +89,15 @@ app.get('/', (_req, res) => {
   });
 });
 
+// ── 14. Time info endpoint ────────────────────────────────────────────────────
+app.get('/time', (_req, res) => {
+  res.json({
+    iso: new Date().toISOString(),
+    utc: new Date().toUTCString(),
+    local: new Date().toString(),
+  });
+});
+
 // ── 12. 404 handler ───────────────────────────────────────────────────────────
 app.use(notFoundHandler);
 

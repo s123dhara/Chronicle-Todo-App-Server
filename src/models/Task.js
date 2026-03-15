@@ -1,6 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
+const logger = require('../utils/logger');
 
 // ── Enums (kept in sync with React CATEGORIES / priority values) ──────────────
 const CATEGORIES = ['Work', 'Personal', 'Health', 'Learning', 'Finance', 'Other'];
@@ -150,6 +151,7 @@ taskSchema.pre(/^find/, function (next) {
 // ── Static: bulk-mark past-due tasks as delayed ───────────────────────────────
 taskSchema.statics.syncDelayedStatus = async function (userId) {
   const now = new Date();
+  logger.debug(`Running syncDelayedStatus for user ${userId} at ${now.toISOString()}`);
   const result = await this.updateMany(
     {
       user: userId,
@@ -176,6 +178,7 @@ taskSchema.statics.syncDelayedStatus = async function (userId) {
       },
     ]
   );
+  logger.info(`syncDelayedStatus updated ${result.modifiedCount} tasks for user ${userId}`);
   return result.modifiedCount;
 };
 
