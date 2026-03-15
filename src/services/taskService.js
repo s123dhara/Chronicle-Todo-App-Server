@@ -1,5 +1,6 @@
 'use strict';
 
+const { log } = require('winston');
 const { Task } = require('../models/Task');
 const AppError = require('../utils/AppError');
 const logger = require('../utils/logger');
@@ -155,6 +156,9 @@ class TaskService {
    */
   async completeDelayedTask(userId, taskId, delayReason) {
     const task = await Task.findOne({ _id: taskId, user: userId });
+    logger.info(`Attempting to complete delayed task: ${taskId} by user ${userId} with reason: ${delayReason}`);
+    logger.debug(`Task details: ${JSON.stringify(task)}`);
+    logger.debug(`current time: ${new Date().toISOString()}`);
     if (!task) throw AppError.notFound('Task not found');
     if (task.completed) throw AppError.badRequest('Task is already completed');
     if (!task.delayed) throw AppError.badRequest('Task is not marked as delayed');
