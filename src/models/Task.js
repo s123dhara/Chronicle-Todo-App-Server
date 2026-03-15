@@ -150,8 +150,8 @@ taskSchema.pre(/^find/, function (next) {
 
 // ── Static: bulk-mark past-due tasks as delayed ───────────────────────────────
 taskSchema.statics.syncDelayedStatus = async function (userId) {
-  const now = new Date();
-  logger.debug(`Running syncDelayedStatus for user ${userId} at ${now.toISOString()}`);
+  const now = new Date();  
+  logger.info(`Running syncDelayedStatus for user ${userId} at ${now.toISOString()}`);
   const result = await this.updateMany(
     {
       user: userId,
