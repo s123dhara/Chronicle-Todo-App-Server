@@ -52,9 +52,10 @@ const consoleTransport = new winston.transports.Console({
 const logger = winston.createLogger({
   level: LOG_LEVEL,
   exitOnError: false,
-  transports: IS_PROD
-    ? [fileRotateTransport, errorRotateTransport]
-    : [consoleTransport, fileRotateTransport, errorRotateTransport],
+  // transports: IS_PROD
+  //   ? [fileRotateTransport, errorRotateTransport, consoleTransport]
+  //   : [consoleTransport, fileRotateTransport, errorRotateTransport],
+  transports: [consoleTransport],
 });
 
 // Stream interface for Morgan HTTP logger
