@@ -1,6 +1,4 @@
-'use strict';
-
-const { StatusCodes } = require('http-status-codes');
+import { StatusCodes } from 'http-status-codes';
 
 /**
  * Unified success response envelope
@@ -45,4 +43,4 @@ const paginationMeta = ({ total, page, limit }) => ({
   hasPrev: page > 1,
 });
 
-module.exports = { sendSuccess, sendError, paginationMeta };
+export { sendSuccess, sendError, paginationMeta };

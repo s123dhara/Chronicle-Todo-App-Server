@@ -1,13 +1,10 @@
-'use strict';
-
-const router = require('express').Router();
-
-const taskController = require('../controllers/taskController');
-const { protect } = require('../middleware/auth');
-const { validate } = require('../middleware/validate');
-const { mutationLimiter } = require('../middleware/rateLimiter');
-const { param, query } = require('express-validator');
-const {
+import { Router } from 'express';
+import * as taskController from '../controllers/taskController.js';
+import { protect } from '../middleware/auth.js';
+import { validate } from '../middleware/validate.js';
+import { mutationLimiter } from '../middleware/rateLimiter.js';
+import { param, query } from 'express-validator';
+import {
   createTaskValidator,
   updateTaskValidator,
   completeTaskValidator,
@@ -15,7 +12,9 @@ const {
   listTasksValidator,
   deleteTaskValidator,
   getTaskValidator,
-} = require('../validators/taskValidators');
+} from '../validators/taskValidators.js';
+
+const router = Router();
 
 // All task routes require authentication
 router.use(protect);
@@ -133,7 +132,4 @@ router.get(
   taskController.getTasksByDate
 );
 
-
- 
-
-module.exports = router;
+export default router;

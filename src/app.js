@@ -1,19 +1,15 @@
-'use strict';
-
-require('dotenv').config();
-
-const express = require('express');
-const helmet = require('helmet');
-const cors = require('cors');
-const compression = require('compression');
-const mongoSanitize = require('express-mongo-sanitize');
-const hpp = require('hpp');
-
-const routes = require('./routes');
-const httpLogger = require('./middleware/httpLogger');
-const { apiLimiter } = require('./middleware/rateLimiter');
-const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
-const logger = require('./utils/logger');
+import 'dotenv/config.js';
+import express from 'express';
+import helmet from 'helmet';
+import cors from 'cors';
+import compression from 'compression';
+import mongoSanitize from 'express-mongo-sanitize';
+import hpp from 'hpp';
+import routes from './routes/index.js';
+import httpLogger from './middleware/httpLogger.js';
+import { apiLimiter } from './middleware/rateLimiter.js';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
+import logger from './utils/logger.js';
 
 const app = express();
 
@@ -104,4 +100,4 @@ app.use(notFoundHandler);
 // ── 13. Global error handler ──────────────────────────────────────────────────
 app.use(errorHandler);
 
-module.exports = app;
+export default app;

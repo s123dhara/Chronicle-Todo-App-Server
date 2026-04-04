@@ -1,10 +1,8 @@
-'use strict';
-
-const { StatusCodes } = require('http-status-codes');
-const taskService = require('../services/taskService');
-const catchAsync = require('../utils/catchAsync');
-const { sendSuccess } = require('../utils/apiResponse');
-const logger = require('../utils/logger');
+import { StatusCodes } from 'http-status-codes';
+import taskService from '../services/taskService.js';
+import catchAsync from '../utils/catchAsync.js';
+import { sendSuccess } from '../utils/apiResponse.js';
+import logger from '../utils/logger.js';
 
 // ── GET /api/v1/tasks ─────────────────────────────────────────────────────────
 const listTasks = catchAsync(async (req, res) => {
@@ -172,7 +170,7 @@ const syncAllDelayed = catchAsync(async (req, res) => {
 //   });
 // });
 
-module.exports = {
+export {
   listTasks,
   getDashboard,
   getCalendar,
@@ -185,5 +183,5 @@ module.exports = {
   reopenTask,
   syncDelayed,
   deleteTask,
-  syncAllDelayed
+  syncAllDelayed,
 };

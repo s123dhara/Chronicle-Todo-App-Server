@@ -1,8 +1,6 @@
-'use strict';
-
-const rateLimit = require('express-rate-limit');
-const { sendError } = require('../utils/apiResponse');
-const { StatusCodes } = require('http-status-codes');
+import rateLimit from 'express-rate-limit';
+import { sendError } from '../utils/apiResponse.js';
+import { StatusCodes } from 'http-status-codes';
 
 const windowMs = parseInt(process.env.RATE_LIMIT_WINDOW_MS, 10) || 15 * 60 * 1000; // 15 min
 const max = parseInt(process.env.RATE_LIMIT_MAX, 10) || 100;
@@ -43,4 +41,4 @@ const mutationLimiter = rateLimit({
   handler,
 });
 
-module.exports = { apiLimiter, authLimiter, mutationLimiter };
+export { apiLimiter, authLimiter, mutationLimiter };

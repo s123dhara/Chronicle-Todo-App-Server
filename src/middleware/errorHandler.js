@@ -1,10 +1,8 @@
-'use strict';
-
-const mongoose = require('mongoose');
-const { StatusCodes } = require('http-status-codes');
-const AppError = require('../utils/AppError');
-const { sendError } = require('../utils/apiResponse');
-const logger = require('../utils/logger');
+import mongoose from 'mongoose';
+import { StatusCodes } from 'http-status-codes';
+import AppError from '../utils/AppError.js';
+import { sendError } from '../utils/apiResponse.js';
+import logger from '../utils/logger.js';
 
 // ── Mongoose error translators ────────────────────────────────────────────────
 
@@ -100,4 +98,4 @@ const notFoundHandler = (req, _res, next) => {
   next(new AppError(`Route ${req.method} ${req.originalUrl} not found`, StatusCodes.NOT_FOUND));
 };
 
-module.exports = { errorHandler, notFoundHandler };
+export { errorHandler, notFoundHandler };

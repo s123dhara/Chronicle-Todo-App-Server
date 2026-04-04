@@ -1,13 +1,9 @@
-'use strict';
-
-// Load env FIRST — before any other require that might need process.env
-require('dotenv').config();
-
-const http = require('http');
-const app = require('./app');
-const { connectDB, disconnectDB } = require('./config/database');
-const { startSyncDelayedCron } = require('./jobs');
-const logger = require('./utils/logger');
+import 'dotenv/config.js';
+import http from 'http';
+import app from './app.js';
+import { connectDB, disconnectDB } from './config/database.js';
+import { startSyncDelayedCron } from './jobs/index.js';
+import logger from './utils/logger.js';
 
 const PORT = parseInt(process.env.PORT, 10) || 5000;
 const HOST = process.env.HOST || '0.0.0.0';
@@ -34,7 +30,7 @@ const start = async () => {
     // 2. Create and start HTTP server
     const server = http.createServer(app);
 
-    // 3. Start Cron jobs 
+    // 3. Start Cron jobs
     startSyncDelayedCron();
 
     server.listen(PORT, HOST, () => {

@@ -1,8 +1,6 @@
-'use strict';
-
-const path = require('path');
-const winston = require('winston');
-require('winston-daily-rotate-file');
+import path from 'path';
+import winston from 'winston';
+import 'winston-daily-rotate-file';
 
 const { combine, timestamp, printf, colorize, errors, json } = winston.format;
 
@@ -63,4 +61,4 @@ logger.stream = {
   write: (message) => logger.http(message.trim()),
 };
 
-module.exports = logger;
+export default logger;

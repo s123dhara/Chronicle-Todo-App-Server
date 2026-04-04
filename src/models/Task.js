@@ -1,7 +1,5 @@
-'use strict';
-
-const mongoose = require('mongoose');
-const logger = require('../utils/logger');
+import mongoose from 'mongoose';
+import logger from '../utils/logger.js';
 
 // ── Enums (kept in sync with React CATEGORIES / priority values) ──────────────
 const CATEGORIES = ['Work', 'Personal', 'Health', 'Learning', 'Finance', 'Other'];
@@ -220,14 +218,14 @@ taskSchema.statics.syncDelayedStatus = async function (userId) {
   const now = new Date();
   logger.info(`Running syncDelayedStatus for user ${userId} at ${now.toISOString()}`);
   // Fetch tasks BEFORE update to see current state
-  const tasksBefore = await this.find({
-    user: userId,
-    completed: false,
-    delayed: false,
-    isDeleted: false,
-  }).select('title scheduledTime duration offset delayed');
-  logger.info(`Tasks before update: ${JSON.stringify(tasksBefore, null, 2)}`);
-  
+  // const tasksBefore = await this.find({
+  //   user: userId,
+  //   completed: false,
+  //   delayed: false,
+  //   isDeleted: false,
+  // }).select('title scheduledTime duration offset delayed');
+  // logger.info(`Tasks before update: ${JSON.stringify(tasksBefore, null, 2)}`);
+
   const result = await this.updateMany(
     {
       user: userId,
@@ -262,11 +260,11 @@ taskSchema.statics.syncDelayedStatus = async function (userId) {
   );
 
   // Fetch tasks AFTER update
-  const tasksAfter = await this.find({
-    user: userId,
-    delayed: true,
-  }).select('title scheduledTime duration offset delayed');
-  logger.info(`Tasks after update (delayed=true): ${JSON.stringify(tasksAfter, null, 2)}`);
+  // const tasksAfter = await this.find({
+  //   user: userId,
+  //   delayed: true,
+  // }).select('title scheduledTime duration offset delayed');
+  // logger.info(`Tasks after update (delayed=true): ${JSON.stringify(tasksAfter, null, 2)}`);
 
   logger.debug(`syncDelayedStatus result for user ${userId}: ${JSON.stringify(result)}`);
   logger.info(`syncDelayedStatus updated ${result.modifiedCount} tasks for user ${userId}`);
@@ -274,4 +272,5 @@ taskSchema.statics.syncDelayedStatus = async function (userId) {
 };
 
 const Task = mongoose.model('Task', taskSchema);
-module.exports = { Task, CATEGORIES, PRIORITIES };
+export default Task;
+export { Task, CATEGORIES, PRIORITIES };

@@ -1,7 +1,5 @@
-'use strict';
-
-const mongoose = require('mongoose');
-const logger = require('../utils/logger');
+import mongoose from 'mongoose';
+import logger from '../utils/logger.js';
 
 const MONGO_OPTIONS = {
   maxPoolSize: 10,
@@ -55,4 +53,4 @@ const disconnectDB = async () => {
   logger.info('MongoDB connection closed gracefully');
 };
 
-module.exports = { connectDB, disconnectDB };
+export { connectDB, disconnectDB };

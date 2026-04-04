@@ -1,10 +1,7 @@
-'use strict';
-
-const { log } = require('winston');
-const { Task } = require('../models/Task');
-const AppError = require('../utils/AppError');
-const logger = require('../utils/logger');
-const User = require('../models/User');
+import { Task } from '../models/Task.js';
+import AppError from '../utils/AppError.js';
+import logger from '../utils/logger.js';
+import User from '../models/User.js';
 
 class TaskService {
   /**
@@ -315,7 +312,7 @@ class TaskService {
   }
 
   async syncAllDelayed() {
-    // Add logger 
+    // Add logger
     logger.info('Manually invoking syncDelayed for all users');
     const users = await User.find().select('_id');
     console.log('Users found for sync:', users.length);
@@ -335,4 +332,4 @@ class TaskService {
   }
 }
 
-module.exports = new TaskService();
+export default new TaskService();

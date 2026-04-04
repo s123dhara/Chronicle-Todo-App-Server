@@ -1,9 +1,7 @@
-'use strict';
-
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const AppError = require('../utils/AppError');
-const catchAsync = require('../utils/catchAsync');
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
+import AppError from '../utils/AppError.js';
+import catchAsync from '../utils/catchAsync.js';
 
 /**
  * Protect routes — verifies Bearer token and attaches req.user
@@ -60,4 +58,4 @@ const optionalAuth = catchAsync(async (req, _res, next) => {
   next();
 });
 
-module.exports = { protect, optionalAuth };
+export { protect, optionalAuth };

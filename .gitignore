@@ -122,3 +122,5 @@ build/Release
 # Temporary folders
 tmp/
 temp/
+
+MODULE_CONVERSION_SUMMARY.md

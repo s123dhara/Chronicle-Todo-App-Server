@@ -1,9 +1,7 @@
-'use strict';
-
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const AppError = require('../utils/AppError');
-const logger = require('../utils/logger');
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
+import AppError from '../utils/AppError.js';
+import logger from '../utils/logger.js';
 
 class AuthService {
   /**
@@ -134,4 +132,4 @@ class AuthService {
   }
 }
 
-module.exports = new AuthService();
+export default new AuthService();

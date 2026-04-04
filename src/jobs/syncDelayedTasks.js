@@ -14,28 +14,28 @@ import taskService from '../services/taskService.js';
  * Sync delayed tasks for all users every 60 seconds
  */
 export function startSyncDelayedCron() {
-  // Run every 60 seconds
-  cron.schedule('*/60 * * * * *', async () => {
+  // Run every 120 seconds
+  cron.schedule('*/120 * * * * *', async () => {
     try {
       logger.info('Starting scheduled sync delayed tasks job');
-      
+
       // Get all users
       const users = await User.find().select('_id');
-      
+
       let totalSynced = 0;
-      
+
       for (const user of users) {
         const { synced } = await taskService.syncDelayed(user._id);
         totalSynced += synced;
       }
-      
+
       logger.info(`Cron job completed: Synced ${totalSynced} tasks across ${users.length} users`);
     } catch (error) {
       logger.error(`Error in syncDelayedTasks cron job: ${error.message}`);
     }
   });
-  
-  logger.info('Sync delayed tasks cron job started (every 60 seconds)');
+
+  logger.info('Sync delayed tasks cron job started (every 120 seconds)');
 }
 
 /**

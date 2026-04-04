@@ -1,13 +1,12 @@
-'use strict';
+import { Router } from 'express';
+import authRoutes from './authRoutes.js';
+import taskRoutes from './taskRoutes.js';
+import healthRoutes from './healthRoutes.js';
 
-const router = require('express').Router();
-
-const authRoutes = require('./authRoutes');
-const taskRoutes = require('./taskRoutes');
-const healthRoutes = require('./healthRoutes');
+const router = Router();
 
 router.use('/auth', authRoutes);
 router.use('/tasks', taskRoutes);
 router.use('/health', healthRoutes);
 
-module.exports = router;
+export default router;

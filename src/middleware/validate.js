@@ -1,8 +1,6 @@
-'use strict';
-
-const { validationResult } = require('express-validator');
-const { sendError } = require('../utils/apiResponse');
-const { StatusCodes } = require('http-status-codes');
+import { validationResult } from 'express-validator';
+import { sendError } from '../utils/apiResponse.js';
+import { StatusCodes } from 'http-status-codes';
 
 /**
  * Must be placed AFTER the validator chain array in the route definition.
@@ -25,4 +23,4 @@ const validate = (req, res, next) => {
   });
 };
 
-module.exports = { validate };
+export { validate };

@@ -1,7 +1,5 @@
-'use strict';
-
-const morgan = require('morgan');
-const logger = require('../utils/logger');
+import morgan from 'morgan';
+import logger from '../utils/logger.js';
 
 // ── Custom Morgan token: response body size ───────────────────────────────────
 morgan.token('body-size', (req, res) => {
@@ -21,4 +19,4 @@ const httpLogger = morgan(process.env.NODE_ENV === 'production' ? PROD_FORMAT : 
   stream: logger.stream,
 });
 
-module.exports = httpLogger;
+export default httpLogger;

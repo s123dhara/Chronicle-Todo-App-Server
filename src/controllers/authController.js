@@ -1,9 +1,7 @@
-'use strict';
-
-const { StatusCodes } = require('http-status-codes');
-const authService = require('../services/authService');
-const catchAsync = require('../utils/catchAsync');
-const { sendSuccess } = require('../utils/apiResponse');
+import { StatusCodes } from 'http-status-codes';
+import authService from '../services/authService.js';
+import catchAsync from '../utils/catchAsync.js';
+import { sendSuccess } from '../utils/apiResponse.js';
 
 // ── POST /api/v1/auth/register ────────────────────────────────────────────────
 const register = catchAsync(async (req, res) => {
@@ -80,4 +78,4 @@ const changePassword = catchAsync(async (req, res) => {
   });
 });
 
-module.exports = { register, login, refreshToken, logout, getMe, updateMe, changePassword };
+export { register, login, refreshToken, logout, getMe, updateMe, changePassword };

@@ -1,17 +1,16 @@
-'use strict';
-
-const router = require('express').Router();
-
-const authController = require('../controllers/authController');
-const { protect } = require('../middleware/auth');
-const { validate } = require('../middleware/validate');
-const { authLimiter } = require('../middleware/rateLimiter');
-const {
+import { Router } from 'express';
+import * as authController from '../controllers/authController.js';
+import { protect } from '../middleware/auth.js';
+import { validate } from '../middleware/validate.js';
+import { authLimiter } from '../middleware/rateLimiter.js';
+import {
   registerValidator,
   loginValidator,
   refreshTokenValidator,
   changePasswordValidator,
-} = require('../validators/authValidators');
+} from '../validators/authValidators.js';
+
+const router = Router();
 
 // ── Public routes (rate-limited) ──────────────────────────────────────────────
 
@@ -65,4 +64,4 @@ router.patch(
   authController.changePassword
 );
 
-module.exports = router;
+export default router;

@@ -1,7 +1,5 @@
-'use strict';
-
-const { body, query, param } = require('express-validator');
-const { CATEGORIES, PRIORITIES } = require('../models/Task');
+import { body, query, param } from 'express-validator';
+import { CATEGORIES, PRIORITIES } from '../models/Task.js';
 
 // ── Reusable field validators ─────────────────────────────────────────────────
 const titleField = (required = true) => {
@@ -164,7 +162,7 @@ const deleteTaskValidator = [param('id').isMongoId().withMessage('Invalid task I
 /** GET /tasks/:id */
 const getTaskValidator = [param('id').isMongoId().withMessage('Invalid task ID')];
 
-module.exports = {
+export {
   createTaskValidator,
   updateTaskValidator,
   completeTaskValidator,

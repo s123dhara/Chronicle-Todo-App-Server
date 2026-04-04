@@ -1,8 +1,6 @@
-'use strict';
-
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 const BCRYPT_ROUNDS = parseInt(process.env.BCRYPT_ROUNDS, 10) || 12;
 
@@ -95,4 +93,4 @@ userSchema.virtual('id').get(function () {
 });
 
 const User = mongoose.model('User', userSchema);
-module.exports = User;
+export default User;

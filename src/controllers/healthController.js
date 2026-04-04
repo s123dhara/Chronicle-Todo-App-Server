@@ -1,9 +1,7 @@
-'use strict';
-
-const mongoose = require('mongoose');
-const catchAsync = require('../utils/catchAsync');
-const { sendSuccess, sendError } = require('../utils/apiResponse');
-const { StatusCodes } = require('http-status-codes');
+import mongoose from 'mongoose';
+import catchAsync from '../utils/catchAsync.js';
+import { sendSuccess, sendError } from '../utils/apiResponse.js';
+import { StatusCodes } from 'http-status-codes';
 
 // ── GET /api/v1/health ────────────────────────────────────────────────────────
 const healthCheck = catchAsync(async (_req, res) => {
@@ -43,4 +41,4 @@ const healthCheck = catchAsync(async (_req, res) => {
 // ── GET /api/v1/health/ping — ultra-light liveness probe ─────────────────────
 const ping = (_req, res) => res.status(200).json({ pong: true, ts: Date.now() });
 
-module.exports = { healthCheck, ping };
+export { healthCheck, ping };
