@@ -65,6 +65,24 @@ const notesField = () =>
     .isLength({ max: 1000 })
     .withMessage('Notes must not exceed 1000 characters');
 
+const timezoneField = (required = false) =>
+  body('timezone')
+    .if(() => required)
+    .notEmpty()
+    .withMessage('Timezone is required')
+    .isString()
+    .withMessage('Timezone must be a string')
+    .trim();
+
+const timezoneOffsetField = (required = false) =>
+  body('timezoneOffset')
+    .if(() => required)
+    .notEmpty()
+    .withMessage('Timezone offset is required')
+    .isInt()
+    .withMessage('Timezone offset must be an integer')
+    .toInt();
+
 // ── Exported validator chains ─────────────────────────────────────────────────
 
 /** POST /tasks */
@@ -76,6 +94,8 @@ const createTaskValidator = [
   scheduledTimeField(true),
   durationField(),
   notesField(),
+  timezoneField(true),
+  timezoneOffsetField(true),
 ];
 
 /** PUT /tasks/:id */

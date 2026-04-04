@@ -89,6 +89,38 @@ const taskSchema = new mongoose.Schema(
       default: '',
     },
 
+    timezoneOffset: {
+      type: Number,
+      default: () => new Date().getTimezoneOffset(),
+      description: 'Offset in minutes from UTC (negative for ahead, positive for behind)',
+    },
+
+    timezone: {
+      type: String,
+      default: () => Intl.DateTimeFormat().resolvedOptions().timeZone,
+      enum: [
+        'UTC',
+        'America/New_York',
+        'America/Chicago',
+        'America/Denver',
+        'America/Los_Angeles',
+        'Europe/London',
+        'Europe/Paris',
+        'Europe/Berlin',
+        'Asia/Tokyo',
+        'Asia/Shanghai',
+        'Asia/Hong_Kong',
+        'Asia/Singapore',
+        'Asia/Dubai',
+        'Asia/Kolkata',
+        'Asia/Calcutta',
+        'Australia/Sydney',
+        'Australia/Melbourne',
+        'Pacific/Auckland',
+        // Add more as needed
+      ],
+    },
+
     // ── Soft delete ───────────────────────────────────────────────────────────
     isDeleted: {
       type: Boolean,
@@ -149,9 +181,53 @@ taskSchema.pre(/^find/, function (next) {
 });
 
 // ── Static: bulk-mark past-due tasks as delayed ───────────────────────────────
+// taskSchema.statics.syncDelayedStatus = async function (userId) {
+//   const now = new Date();
+//   logger.info(`Running syncDelayedStatus for user ${userId} at ${now.toISOString()}`);
+
+//   const result = await this.updateMany(
+//     {
+//       user: userId,
+//       completed: false,
+//       delayed: false,
+//       isDeleted: false,
+//     },
+//     [
+//       {
+//         $set: {
+//           delayed: {
+//             $lt: [
+//               {
+//                 $dateAdd: {
+//                   startDate: { $dateFromString: { dateString: '$scheduledTime' } },
+//                   unit: 'minute',
+//                   amount: '$duration',
+//                 },
+//               },
+//               now,
+//             ],
+//           },
+//         },
+//       },
+//     ]
+//   );
+//   logger.debug(`syncDelayedStatus result for user ${userId}: ${JSON.stringify(result)}`);
+//   logger.info(`syncDelayedStatus updated ${result.modifiedCount} tasks for user ${userId}`);
+//   return result.modifiedCount;
+// };
+
 taskSchema.statics.syncDelayedStatus = async function (userId) {
-  const now = new Date();  
+  const now = new Date();
   logger.info(`Running syncDelayedStatus for user ${userId} at ${now.toISOString()}`);
+  // Fetch tasks BEFORE update to see current state
+  const tasksBefore = await this.find({
+    user: userId,
+    completed: false,
+    delayed: false,
+    isDeleted: false,
+  }).select('title scheduledTime duration offset delayed');
+  logger.info(`Tasks before update: ${JSON.stringify(tasksBefore, null, 2)}`);
+  
   const result = await this.updateMany(
     {
       user: userId,
@@ -171,13 +247,27 @@ taskSchema.statics.syncDelayedStatus = async function (userId) {
                   amount: '$duration',
                 },
               },
-              now,
+              {
+                $dateAdd: {
+                  startDate: now,
+                  unit: 'minute',
+                  amount: { $multiply: ['$timezoneOffset', -1] }, // Negate offset
+                },
+              },
             ],
           },
         },
       },
     ]
   );
+
+  // Fetch tasks AFTER update
+  const tasksAfter = await this.find({
+    user: userId,
+    delayed: true,
+  }).select('title scheduledTime duration offset delayed');
+  logger.info(`Tasks after update (delayed=true): ${JSON.stringify(tasksAfter, null, 2)}`);
+
   logger.debug(`syncDelayedStatus result for user ${userId}: ${JSON.stringify(result)}`);
   logger.info(`syncDelayedStatus updated ${result.modifiedCount} tasks for user ${userId}`);
   return result.modifiedCount;
