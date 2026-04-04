@@ -4,6 +4,7 @@ const { log } = require('winston');
 const { Task } = require('../models/Task');
 const AppError = require('../utils/AppError');
 const logger = require('../utils/logger');
+const User = require('../models/User');
 
 class TaskService {
   /**
@@ -156,7 +157,9 @@ class TaskService {
    */
   async completeDelayedTask(userId, taskId, delayReason) {
     const task = await Task.findOne({ _id: taskId, user: userId });
-    logger.info(`Attempting to complete delayed task: ${taskId} by user ${userId} with reason: ${delayReason}`);
+    logger.info(
+      `Attempting to complete delayed task: ${taskId} by user ${userId} with reason: ${delayReason}`
+    );
     logger.debug(`Task details: ${JSON.stringify(task)}`);
     logger.debug(`current time: ${new Date().toISOString()}`);
     if (!task) throw AppError.notFound('Task not found');
@@ -306,8 +309,29 @@ class TaskService {
    * Bulk sync delayed status for a user (can be called by a cron job)
    */
   async syncDelayed(userId) {
+    logger.info(`invoking syncDelayed for user ${userId}`);
     const count = await Task.syncDelayedStatus(userId);
     return { synced: count };
+  }
+
+  async syncAllDelayed() {
+    // Add logger 
+    logger.info('Manually invoking syncDelayed for all users');
+    const users = await User.find().select('_id');
+    console.log('Users found for sync:', users.length);
+
+    let totalSynced = 0;
+
+    for (const user of users) {
+      const { synced } = await this.syncDelayed(user._id);
+      totalSynced += synced;
+    }
+
+    logger.info(
+      `Mannual Invoke completed: Synced ${totalSynced} tasks across ${users.length} users`
+    );
+
+    return { synced: totalSynced, users: users.length };
   }
 }
 

@@ -6,6 +6,7 @@ require('dotenv').config();
 const http = require('http');
 const app = require('./app');
 const { connectDB, disconnectDB } = require('./config/database');
+const { startSyncDelayedCron } = require('./jobs');
 const logger = require('./utils/logger');
 
 const PORT = parseInt(process.env.PORT, 10) || 5000;
@@ -32,6 +33,9 @@ const start = async () => {
 
     // 2. Create and start HTTP server
     const server = http.createServer(app);
+
+    // 3. Start Cron jobs 
+    startSyncDelayedCron();
 
     server.listen(PORT, HOST, () => {
       logger.info(`

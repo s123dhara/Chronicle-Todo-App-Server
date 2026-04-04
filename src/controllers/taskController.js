@@ -4,6 +4,7 @@ const { StatusCodes } = require('http-status-codes');
 const taskService = require('../services/taskService');
 const catchAsync = require('../utils/catchAsync');
 const { sendSuccess } = require('../utils/apiResponse');
+const logger = require('../utils/logger');
 
 // ── GET /api/v1/tasks ─────────────────────────────────────────────────────────
 const listTasks = catchAsync(async (req, res) => {
@@ -152,6 +153,17 @@ const deleteTask = catchAsync(async (req, res) => {
   });
 });
 
+// ── GET /api/v1/tasks/sync-all-delayed ─────────────────────────────────────────
+const syncAllDelayed = catchAsync(async (req, res) => {
+  logger.info(`API endpoint /tasks/sync-all-delayed called`);
+  const result = await taskService.syncAllDelayed();
+
+  return sendSuccess(res, {
+    message: `Delayed sync complete. ${result.synced} task(s) updated.`,
+    data: result,
+  });
+});
+
 // const getTasksByDate = catchAsync(async (req, res) => {
 //   const tasks = await taskService.getTasksByDate(req.user._id, req.params.date);
 //   return sendSuccess(res, {
@@ -173,4 +185,5 @@ module.exports = {
   reopenTask,
   syncDelayed,
   deleteTask,
+  syncAllDelayed
 };

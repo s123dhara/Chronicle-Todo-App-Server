@@ -55,6 +55,12 @@ router.get(
  */
 router.patch('/sync-delayed', taskController.syncDelayed);
 
+/** @route  GET /api/v1/tasks/sync-delayed
+ *  @desc   Trigger delayed-status sync for the all user
+ *  @access Private
+ */
+router.get('/sync-all-delayed', taskController.syncAllDelayed);
+
 // ── Collection routes ─────────────────────────────────────────────────────────
 
 /** @route  GET /api/v1/tasks
@@ -126,5 +132,8 @@ router.get(
   ],
   taskController.getTasksByDate
 );
+
+
+ 
 
 module.exports = router;
