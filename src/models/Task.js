@@ -178,6 +178,7 @@ taskSchema.statics.syncDelayedStatus = async function (userId) {
       },
     ]
   );
+  logger.debug(`syncDelayedStatus result for user ${userId}: ${JSON.stringify(result)}`);
   logger.info(`syncDelayedStatus updated ${result.modifiedCount} tasks for user ${userId}`);
   return result.modifiedCount;
 };
